@@ -1,0 +1,2193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bromcom - School Management System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #667eea;
+            font-weight: bold;
+            font-size: 24px;
+        }
+
+        nav {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+
+        nav a:hover {
+            opacity: 0.8;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 35px;
+            height: 35px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        /* Container */
+        .container {
+            display: flex;
+            min-height: calc(100vh - 70px);
+        }
+
+        /* Sidebar */
+        aside {
+            width: 250px;
+            background: white;
+            border-right: 1px solid #e0e0e0;
+            padding: 2rem 0;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+            overflow-y: auto;
+        }
+
+        .menu-section {
+            margin-bottom: 2rem;
+        }
+
+        .menu-title {
+            color: #667eea;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+            padding: 0 1.5rem;
+            margin-bottom: 1rem;
+            letter-spacing: 1px;
+        }
+
+        .menu-item {
+            padding: 0.75rem 1.5rem;
+            color: #555;
+            text-decoration: none;
+            display: block;
+            transition: all 0.3s;
+            border-left: 3px solid transparent;
+            cursor: pointer;
+        }
+
+        .menu-item:hover {
+            background-color: #f5f7fa;
+            border-left-color: #667eea;
+            color: #667eea;
+        }
+
+        .menu-item.active {
+            background-color: #f0f3ff;
+            border-left-color: #667eea;
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        /* Main Content */
+        main {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+            background-color: #f5f7fa;
+        }
+
+        /* Dashboard Header */
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .dashboard-header h1 {
+            font-size: 32px;
+            color: #333;
+        }
+
+        .dashboard-header p {
+            color: #666;
+            margin-top: 0.5rem;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .btn-secondary:hover {
+            background: #f0f3ff;
+        }
+
+        .btn-small {
+            padding: 0.5rem 1rem;
+            font-size: 12px;
+        }
+
+        /* Cards Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.12);
+        }
+
+        .card-icon {
+            font-size: 32px;
+            margin-bottom: 1rem;
+        }
+
+        .card-title {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .card-value {
+            font-size: 28px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-change {
+            font-size: 12px;
+            color: #28a745;
+        }
+
+        .card-change.negative {
+            color: #dc3545;
+        }
+
+        /* Table Styles */
+        .table-container {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            margin-bottom: 2rem;
+            overflow-x: auto;
+        }
+
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .table-header h2 {
+            font-size: 18px;
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead tr {
+            background-color: #f5f7fa;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        th {
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: #667eea;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid #f0f0f0;
+            color: #555;
+        }
+
+        tbody tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.35rem 0.75rem;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .badge-danger {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .badge-warning {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .badge-info {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        /* Form Styles */
+        .form-container {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        /* Section Separator */
+        .section {
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid #667eea;
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-item {
+            background: white;
+            padding: 1.25rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            text-align: center;
+            border-top: 3px solid #667eea;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 12px;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        /* Attendance Input Table */
+        .attendance-form-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1.5rem;
+        }
+
+        .attendance-form-table thead tr {
+            background: #f5f7fa;
+        }
+
+        .attendance-form-table td {
+            padding: 1rem;
+            border: 1px solid #ddd;
+        }
+
+        .attendance-form-table input[type="radio"],
+        .attendance-form-table input[type="time"],
+        .attendance-form-table input[type="text"] {
+            width: auto;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .radio-group label {
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: normal;
+            cursor: pointer;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            aside {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid #e0e0e0;
+                display: flex;
+                overflow-x: auto;
+            }
+
+            .menu-section {
+                margin-bottom: 0;
+                margin-right: 2rem;
+                white-space: nowrap;
+            }
+
+            nav {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .dashboard-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .table-container {
+                overflow-x: auto;
+            }
+        }
+
+        /* Alert Styles */
+        .alert {
+            padding: 1rem;
+            border-radius: 5px;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+        }
+
+        .alert-danger {
+            background: #f8d7da;
+            border-color: #dc3545;
+            color: #721c24;
+        }
+
+        .alert-warning {
+            background: #fff3cd;
+            border-color: #ffc107;
+            color: #856404;
+        }
+
+        .alert-info {
+            background: #d1ecf1;
+            border-color: #17a2b8;
+            color: #0c5460;
+        }
+
+        /* Row state colors */
+        .row-detention {
+            background: linear-gradient(90deg,#ffe6e6,#ffd6d6) !important;
+        }
+        .row-late {
+            background: linear-gradient(90deg,#e6f0ff,#d6e6ff) !important;
+        }
+        .row-greenflag {
+            background: linear-gradient(90deg,#e9ffe6,#d6ffd6) !important;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            color: #333;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+        }
+
+        /* Footer */
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        footer a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="logo">
+            <div class="logo-icon">B</div>
+            <span>BROMCOM</span>
+        </div>
+        <nav>
+            <a href="#dashboard">Dashboard</a>
+            <a href="#attendance">Attendance</a>
+            <a href="#behavior">Behavior</a>
+            <a href="#detention">Detention</a>
+            <a href="#reports">Reports</a>
+        </nav>
+        <div class="user-menu">
+            <span>👤</span>
+            <div class="user-avatar">👨</div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Sidebar -->
+        <aside>
+            <div class="menu-section">
+                <div class="menu-title">Dashboard</div>
+                <a class="menu-item active" href="#dashboard">📊 Overview</a>
+                <a class="menu-item" href="#analytics">📈 Analytics</a>
+            </div>
+
+            <div class="menu-section">
+                <div class="menu-title">Attendance</div>
+                <a class="menu-item" href="#attendance-mark">✏️ Mark Attendance</a>
+                <a class="menu-item" href="#attendance-view">👁️ View Records</a>
+                <a class="menu-item" href="#attendance-report">📋 Reports</a>
+            </div>
+
+            <div class="menu-section">
+                <div class="menu-title">Behavior</div>
+                <a class="menu-item" href="#behavior-incident">🚨 Log Incident</a>
+                <a class="menu-item" href="#behavior-view">👁️ View Records</a>
+                <a class="menu-item" href="#behavior-report">📊 Analytics</a>
+            </div>
+
+            <div class="menu-section">
+                <div class="menu-title">Detention</div>
+                <a class="menu-item" href="#detention-assign">📌 Assign Detention</a>
+                <a class="menu-item" href="#detention-schedule">📅 Schedule</a>
+                <a class="menu-item" href="#detention-track">📍 Track</a>
+            </div>
+
+            <div class="menu-section">
+                <div class="menu-title">Administration</div>
+                <a class="menu-item" href="#users">👥 Users</a>
+                <a class="menu-item" href="#settings">⚙️ Settings</a>
+                <a class="menu-item" href="#reports">📊 All Reports</a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main>
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="section">
+                <div class="dashboard-header">
+                    <div>
+                        <h1>Dashboard</h1>
+                        <p>Welcome back! Here's your school's performance overview.</p>
+                    </div>
+                    <div class="header-actions">
+                        <button class="btn btn-primary">📥 Import Data</button>
+                        <button class="btn btn-secondary">📊 Generate Report</button>
+                    </div>
+                </div>
+
+                <!-- Statistics Cards -->
+                <div class="stats-bar">
+                    <div class="stat-item">
+                        <div class="stat-label">Total Students</div>
+                        <div class="stat-value">1,245</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">Attendance Rate</div>
+                        <div class="stat-value">94.2%</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">Incidents Today</div>
+                        <div class="stat-value">12</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">Active Detentions</div>
+                        <div class="stat-value">8</div>
+                    </div>
+                </div>
+
+                <!-- Dashboard Cards -->
+                <div class="cards-grid">
+                    <div class="card">
+                        <div class="card-icon">📚</div>
+                        <div class="card-title">Classes</div>
+                        <div class="card-value">48</div>
+                        <div class="card-change">+2 this term</div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-icon">✅</div>
+                        <div class="card-title">Present Today</div>
+                        <div class="card-value">1,187</div>
+                        <div class="card-change">95.3% average</div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-icon">❌</div>
+                        <div class="card-title">Absent Today</div>
+                        <div class="card-value">58</div>
+                        <div class="card-change negative">4.7% absent</div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-icon">⏰</div>
+                        <div class="card-title">Late Today</div>
+                        <div class="card-value">23</div>
+                        <div class="card-change negative">1.8% late</div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-icon">⚠️</div>
+                        <div class="card-title">Incidents (This Week)</div>
+                        <div class="card-value">34</div>
+                        <div class="card-change">5 critical</div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-icon">🏫</div>
+                        <div class="card-title">Detentions Assigned</div>
+                        <div class="card-value">12</div>
+                        <div class="card-change">This week</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Attendance Section -->
+            <section id="attendance-mark" class="section">
+                <h2 class="section-title">📝 Mark Attendance</h2>
+
+                <div class="form-container">
+                    <div class="form-group">
+                        <label>Class *</label>
+                        <select required>
+                            <option value="">Select Class</option>
+                            <option value="10A">Class 10A</option>
+                            <option value="10B">Class 10B</option>
+                            <option value="11A">Class 11A</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Date *</label>
+                        <input type="date" value="2024-12-01" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Subject/Period</label>
+                        <input type="text" placeholder="e.g., English, Math">
+                    </div>
+
+                    <table class="attendance-form-table">
+                        <thead>
+                            <tr>
+                                <th>Student Name</th>
+                                <th>Status</th>
+                                <th>Time</th>
+                                <th>Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Rows will be generated by JavaScript to be interactive -->
+                        </tbody>
+                    </table>
+
+                    <div style="margin-bottom:10px; display:flex; gap:8px; align-items:center;">
+                        <label for="uiLanguage">UI Language:</label>
+                        <select id="uiLanguage">
+                            <option value="en">English</option>
+                            <option value="ur">اردو</option>
+                        </select>
+
+                        <label for="paLanguage">PA Language:</label>
+                        <select id="paLanguage">
+                            <option value="en">English</option>
+                            <option value="ur">Urdu</option>
+                        </select>
+                        <label for="paVoice">PA Voice:</label>
+                        <select id="paVoice"></select>
+                        <input id="paMessage" placeholder="PA message (e.g. 'Assembly in 5 minutes')" style="flex:1; padding:6px;" />
+                        <button id="playPA" class="btn">Play PA Message</button>
+                        <button id="schoolBellBtn" class="btn" title="Play school bell">🔔 Bell</button>
+                        <button id="fireAlarmBtn" class="btn btn-danger" title="Trigger fire alarm">🚨 Fire</button>
+                        <button id="lockdownBtn" class="btn btn-warning" title="Trigger lockdown">🔒 Lockdown</button>
+                    </div>
+
+                    <div style="margin-top:12px;">
+                        <table id="interactiveAttendance" class="attendance-form-table">
+                            <thead>
+                                <tr>
+                                    <th>Student Name</th>
+                                    <th>Status</th>
+                                    <th>Time</th>
+                                    <th>Notes</th>
+                                    <th>Behavior</th>
+                                    <th>Detention</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="attendanceInteractiveBody">
+                                <!-- JS renders rows here -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div style="margin-top:12px; display:flex; gap:8px; align-items:center;">
+                        <input id="newStudentName" type="text" placeholder="Add new student name" style="flex:1; padding:8px;" />
+                        <button id="addStudentBtn" class="btn btn-primary">➕ Add Student</button>
+                        <button id="runCheckTestBtn" class="btn btn-secondary">🔬 Run Check Test</button>
+                    </div>
+                    
+                    <div class="header-actions" style="margin-top:10px;">
+                        <button id="submitAttendanceBtn" class="btn btn-primary">✅ Submit Attendance</button>
+                        <button id="saveDraftBtn" class="btn btn-secondary">💾 Save as Draft</button>
+                    </div>
+                        </tbody>
+                    </table>
+
+                    <div class="header-actions">
+                        <button class="btn btn-primary">✅ Submit Attendance</button>
+                        <button class="btn btn-secondary">💾 Save as Draft</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Recent Attendance Table -->
+            <section id="attendance-view" class="section">
+                <div class="table-container">
+                    <div class="table-header">
+                        <h2>Recent Attendance Records</h2>
+                        <button class="btn btn-small btn-primary">📥 Export</button>
+                    </div>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Student Name</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Time</th>
+                                <th>Class</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>John Smith</td>
+                                <td>2024-12-01</td>
+                                <td><span class="badge badge-success">Present</span></td>
+                                <td>09:00</td>
+                                <td>10A</td>
+                                <td><a href="#" class="btn btn-small btn-secondary">Edit</a></td>
+                            </tr>
+                            <tr>
+                                <td>Jane Doe</td>
+                                <td>2024-12-01</td>
+                                <td><span class="badge badge-info">Late</span></td>
+                                <td>09:45</td>
+                                <td>10A</td>
+                                <td><a href="#" class="btn btn-small btn-secondary">Edit</a></td>
+                            </tr>
+                            <tr>
+                                <td>Mike Johnson</td>
+                                <td>2024-12-01</td>
+                                <td><span class="badge badge-danger">Absent</span></td>
+                                <td>-</td>
+                                <td>10A</td>
+                                <td><a href="#" class="btn btn-small btn-secondary">Edit</a></td>
+                            </tr>
+                            <tr>
+                                <td>Sarah Williams</td>
+                                <td>2024-12-01</td>
+                                <td><span class="badge badge-success">Present</span></td>
+                                <td>09:02</td>
+                                <td>10A</td>
+                                <td><a href="#" class="btn btn-small btn-secondary">Edit</a></td>
+                            </tr>
+                            <tr>
+                                <td>Emily Brown</td>
+                                <td>2024-12-01</td>
+                                <td><span class="badge badge-warning">Excused</span></td>
+                                <td>-</td>
+                                <td>10B</td>
+                                <td><a href="#" class="btn btn-small btn-secondary">Edit</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Behavior Section -->
+            <section id="behavior-incident" class="section">
+                <h2 class="section-title">🚨 Log Behavioral Incident</h2>
+
+                <div class="form-container">
+                    <div class="form-group">
+                        <label>Student *</label>
+                        <select id="incidentStudent" required>
+                            <option value="">Select Student</option>
+                        </select>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Incident Type *</label>
+                            <select required>
+                                <option value="">Select Type</option>
+                                <option value="disruption">Disruption</option>
+                                <option value="disrespect">Disrespect</option>
+                                <option value="bullying">Bullying</option>
+                                <option value="dishonesty">Dishonesty</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Severity Level *</label>
+                            <select id="incidentSeverity" required>
+                                <option value="">Select Severity</option>
+                                <option value="1">1 - Excellent</option>
+                                <option value="2">2 - Good</option>
+                                <option value="3">3 - Disruptive</option>
+                                <option value="4">4 - Poor</option>
+                                <option value="5">5 - Physical Conflict</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Description *</label>
+                        <textarea id="incidentDescription" placeholder="Describe the incident in detail..." required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Location</label>
+                        <input id="incidentLocation" type="text" placeholder="e.g., Classroom, Hallway">
+                    </div>
+
+                    <div style="margin-top:8px;">
+                        <button id="logIncidentBtn" class="btn btn-primary">🚨 Log Incident</button>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Date & Time</label>
+                        <input type="datetime-local" value="2024-12-01T10:30">
+                    </div>
+
+                    <div class="header-actions">
+                        <button class="btn btn-primary">📌 Log Incident</button>
+                        <button class="btn btn-secondary">🗑️ Clear Form</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Behavior Records Table -->
+            <section id="behavior-view" class="section">
+                <div class="table-container">
+                    <div class="table-header">
+                        <h2>Behavioral Incidents</h2>
+                        <button class="btn btn-small btn-primary">📊 Analytics</button>
+                    </div>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Student</th>
+                                <th>Incident Type</th>
+                                <th>Severity</th>
+                                <th>Points</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>John Smith</td>
+                                <td>Disruption</td>
+                                <td>Moderate</td>
+                                <td>10</td>
+                                <td>2024-12-01</td>
+                                <td><span class="badge badge-warning">Pending</span></td>
+                                <td><a href="#" class="btn btn-small btn-secondary">View</a></td>
+                            </tr>
+                            <tr>
+                                <td>Jane Doe</td>
+                                <td>Disrespect</td>
+                                <td>Serious</td>
+                                <td>15</td>
+                                <td>2024-11-30</td>
+                                <td><span class="badge badge-info">Resolved</span></td>
+                                <td><a href="#" class="btn btn-small btn-secondary">View</a></td>
+                            </tr>
+                            <tr>
+                                <td>Mike Johnson</td>
+                                <td>Bullying</td>
+                                <td>Critical</td>
+                                <td>20</td>
+                                <td>2024-11-29</td>
+                                <td><span class="badge badge-danger">Escalated</span></td>
+                                <td><a href="#" class="btn btn-small btn-secondary">View</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Detention Section -->
+            <section id="detention-assign" class="section">
+                <h2 class="section-title">📌 Assign Detention</h2>
+
+                <div class="form-container">
+                    <div class="form-group">
+                        <label>Student *</label>
+                        <select required>
+                            <option value="">Select Student</option>
+                            <option value="john">John Smith</option>
+                            <option value="jane">Jane Doe</option>
+                            <option value="mike">Mike Johnson</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Reason *</label>
+                        <input type="text" placeholder="e.g., Repeated disruption">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Detention Type *</label>
+                        <select required>
+                            <option value="">Select Type</option>
+                            <option value="in-school">In-School</option>
+                            <option value="after-school">After-School</option>
+                            <option value="weekend">Weekend</option>
+                            <option value="saturday">Saturday</option>
+                        </select>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Date *</label>
+                            <input type="date" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Time *</label>
+                            <input type="time" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Duration *</label>
+                            <select required>
+                                <option value="">Select Duration</option>
+                                <option value="30min">30 minutes</option>
+                                <option value="1hr">1 hour</option>
+                                <option value="2hrs">2 hours</option>
+                                <option value="custom">Custom</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Supervisor *</label>
+                            <select required>
+                                <option value="">Select Supervisor</option>
+                                <option value="mr-smith">Mr. Smith</option>
+                                <option value="ms-jones">Ms. Jones</option>
+                                <option value="mr-wilson">Mr. Wilson</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Room/Location</label>
+                        <input type="text" placeholder="e.g., Room 201, Library">
+                    </div>
+
+                    <div class="header-actions">
+                        <button class="btn btn-primary">✅ Assign Detention</button>
+                        <button class="btn btn-secondary">🗑️ Clear Form</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Detention Schedule Table -->
+            <section id="detention-schedule" class="section">
+                <div class="table-container">
+                    <div class="table-header">
+                        <h2>Detention Schedule</h2>
+                        <button class="btn btn-small btn-primary">📅 View Calendar</button>
+                    </div>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Student</th>
+                                <th>Reason</th>
+                                <th>Type</th>
+                                <th>Date & Time</th>
+                                <th>Duration</th>
+                                <th>Supervisor</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>John Smith</td>
+                                <td>Repeated disruption</td>
+                                <td>After-School</td>
+                                <td>2024-12-02 15:30</td>
+                                <td>1 hour</td>
+                                <td>Mr. Smith</td>
+                                <td><span class="badge badge-info">Scheduled</span></td>
+                                <td><a href="#" class="btn btn-small btn-secondary">Edit</a></td>
+                            </tr>
+                            <tr>
+                                <td>Jane Doe</td>
+                                <td>Incomplete homework</td>
+                                <td>In-School</td>
+                                <td>2024-12-03 14:00</td>
+                                <td>30 min</td>
+                                <td>Ms. Jones</td>
+                                <td><span class="badge badge-success">Completed</span></td>
+                                <td><a href="#" class="btn btn-small btn-secondary">View</a></td>
+                            </tr>
+                            <tr>
+                                <td>Mike Johnson</td>
+                                <td>Behavioral incident</td>
+                                <td>Saturday</td>
+                                <td>2024-12-07 10:00</td>
+                                <td>2 hours</td>
+                                <td>Mr. Wilson</td>
+                                <td><span class="badge badge-warning">Pending</span></td>
+                                <td><a href="#" class="btn btn-small btn-secondary">Edit</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Reports Summary -->
+            <section id="reports" class="section">
+                <h2 class="section-title">📊 Reports & Analytics</h2>
+
+                <div class="cards-grid">
+                    <div class="card">
+                        <div class="card-icon">📊</div>
+                        <div class="card-title">Attendance Report</div>
+                        <p style="margin-top: 1rem; color: #666;">Generate comprehensive attendance reports</p>
+                        <button class="btn btn-primary btn-small" style="margin-top: 1rem;">Generate</button>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-icon">⚠️</div>
+                        <div class="card-title">Behavior Report</div>
+                        <p style="margin-top: 1rem; color: #666;">Analyze behavioral incidents and trends</p>
+                        <button class="btn btn-primary btn-small" style="margin-top: 1rem;">Generate</button>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-icon">🔗</div>
+                        <div class="card-title">Detention Report</div>
+                        <p style="margin-top: 1rem; color: #666;">Track detention assignments and completion</p>
+                        <button class="btn btn-primary btn-small" style="margin-top: 1rem;">Generate</button>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-icon">📈</div>
+                        <div class="card-title">Custom Report</div>
+                        <p style="margin-top: 1rem; color: #666;">Create custom reports with your filters</p>
+                        <button class="btn btn-primary btn-small" style="margin-top: 1rem;">Create</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Bromcom - School Management System | <a href="#">Privacy Policy</a> | <a href="#">Contact Support</a></p>
+        <p>Version 1.0 | Developed for Educational Excellence</p>
+    </footer>
+
+    <!-- Test / Result Modal -->
+    <div id="testModal" class="modal" aria-hidden="true">
+        <div class="modal-content" style="max-width:700px;">
+            <div class="modal-header">
+                <h2 id="testModalTitle">Test Results</h2>
+                <button class="close-btn" id="testModalClose">&times;</button>
+            </div>
+            <div id="testModalBody" style="max-height:50vh; overflow:auto; white-space:pre-wrap; font-family:monospace; font-size:13px; padding:8px; border:1px solid #eee; border-radius:6px; background:#fafafa;"></div>
+            <div style="margin-top:12px; display:flex; gap:8px; justify-content:flex-end;">
+                <button class="btn btn-secondary" id="testModalCopy">📋 Copy</button>
+                <button class="btn btn-secondary" id="testModalDownload">⬇️ Download</button>
+                <button class="btn btn-primary" id="testModalOk">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Visual Test Log Panel (collapsible) -->
+    <div id="testLogPanel" style="position:fixed; right:16px; bottom:16px; width:320px; max-height:60vh; background:rgba(255,255,255,0.95); border-radius:8px; box-shadow:0 6px 24px rgba(0,0,0,0.12); overflow:auto; z-index:2500;">
+        <div style="padding:8px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid #eee;">
+            <strong>Test Log</strong>
+            <div>
+                <button id="clearTestLog" class="btn btn-small btn-secondary">Clear</button>
+                <button id="toggleTestLog" class="btn btn-small btn-primary">Hide</button>
+            </div>
+        </div>
+        <div id="testLogBody" style="padding:8px; font-family:monospace; font-size:12px; white-space:pre-wrap; color:#333; max-height:48vh; overflow:auto;"></div>
+    </div>
+
+    <script>
+        // --- Basic UI helpers ---
+        const menuItems = document.querySelectorAll('.menu-item');
+        menuItems.forEach(item => {
+            item.addEventListener('click', function(e) {
+                menuItems.forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Prepare initial in-memory student data
+        const students = [
+            { id: 'john', name: 'John Smith', status: '', time: '09:00', notes: '', incidents: [], detention: false, greenFlag: false },
+            { id: 'jane', name: 'Jane Doe', status: '', time: '09:05', notes: '', incidents: [], detention: false, greenFlag: false },
+            { id: 'mike', name: 'Mike Johnson', status: '', time: '10:30', notes: '', incidents: [], detention: false, greenFlag: false }
+        ];
+
+        // Severity mapping (user requested labels)
+        const severityLabels = {
+            '1': 'Excellent',
+            '2': 'Good',
+            '3': 'Disruptive',
+            '4': 'Poor',
+            '5': 'Physical Conflict'
+        };
+
+        // Render students into the interactive attendance table
+        function renderAttendance() {
+            const tbody = document.getElementById('attendanceInteractiveBody');
+            tbody.innerHTML = '';
+            const incidentSelect = document.getElementById('incidentStudent');
+            incidentSelect.innerHTML = '<option value="">Select Student</option>';
+
+            students.forEach(student => {
+                // add option to incident select
+                const opt = document.createElement('option');
+                opt.value = student.id;
+                opt.textContent = student.name;
+                incidentSelect.appendChild(opt);
+
+                const tr = document.createElement('tr');
+                tr.dataset.studentId = student.id;
+
+                // Name (editable)
+                const nameTd = document.createElement('td');
+                nameTd.contentEditable = true;
+                nameTd.className = 'student-name';
+                nameTd.textContent = student.name;
+                // We'll set highlighting and row class later based on weekly checks
+                nameTd.addEventListener('blur', () => {
+                    student.name = nameTd.textContent.trim();
+                    // update incident select label
+                    renderAttendance();
+                });
+
+                // Status radios
+                const statusTd = document.createElement('td');
+                const statuses = ['P','A','L','E'];
+                const radioGroup = document.createElement('div');
+                radioGroup.className = 'radio-group';
+                statuses.forEach(s => {
+                    const label = document.createElement('label');
+                    const input = document.createElement('input');
+                    input.type = 'radio';
+                    input.name = 'status_' + student.id;
+                    input.value = s;
+                    if (student.status === s) input.checked = true;
+                    input.addEventListener('change', () => student.status = s);
+                    label.appendChild(input);
+                    label.appendChild(document.createTextNode(' ' + s + ' '));
+                    radioGroup.appendChild(label);
+                });
+                statusTd.appendChild(radioGroup);
+
+                // Time
+                const timeTd = document.createElement('td');
+                const timeInput = document.createElement('input');
+                timeInput.type = 'time';
+                timeInput.value = student.time || '';
+                timeInput.addEventListener('change', () => student.time = timeInput.value);
+                timeTd.appendChild(timeInput);
+
+                // Notes
+                const notesTd = document.createElement('td');
+                const notesInput = document.createElement('input');
+                notesInput.type = 'text';
+                notesInput.placeholder = 'Notes';
+                notesInput.value = student.notes || '';
+                notesInput.addEventListener('change', () => student.notes = notesInput.value);
+                notesTd.appendChild(notesInput);
+
+                // Behavior summary
+                const behaviorTd = document.createElement('td');
+                const counts = countIncidents(student);
+                behaviorTd.innerHTML = Object.keys(severityLabels).map(k => {
+                    const c = counts[k] || 0;
+                    return `<span style="margin-right:6px; font-size:12px;">${k}:${c}</span>`;
+                }).join('');
+
+                // Detention column
+                const detTd = document.createElement('td');
+                if (student.detention) {
+                    detTd.innerHTML = '<span class="badge badge-danger">Assigned</span>';
+                } else if (student.greenFlag) {
+                    detTd.innerHTML = '<span class="badge badge-success">Green Flag</span>';
+                } else {
+                    detTd.innerHTML = '<span class="badge">None</span>';
+                }
+
+                // Actions
+                const actionsTd = document.createElement('td');
+                const logBtn = document.createElement('button');
+                logBtn.className = 'btn btn-small btn-primary';
+                logBtn.textContent = 'Log Incident';
+                logBtn.addEventListener('click', () => {
+                    document.getElementById('incidentStudent').value = student.id;
+                    document.getElementById('incidentSeverity').focus();
+                    // scroll to behavior form
+                    document.getElementById('behavior-incident').scrollIntoView({behavior: 'smooth'});
+                });
+                actionsTd.appendChild(logBtn);
+
+                // Green Flag toggle button
+                const greenBtn = document.createElement('button');
+                greenBtn.className = 'btn btn-small btn-secondary';
+                greenBtn.style.marginLeft = '8px';
+                greenBtn.textContent = student.greenFlag ? 'Remove Green Flag' : 'Green Flag';
+                greenBtn.addEventListener('click', async () => {
+                    student.greenFlag = !student.greenFlag;
+                    // Persist change to backend (non-blocking)
+                    try {
+                        await persistGreenFlag(student);
+                    } catch (e) {
+                        console.warn('GreenFlag persistence error', e);
+                    }
+                    if (student.greenFlag) {
+                        alert(`${student.name} marked with Green Flag — exempt from detentions.`);
+                        // Announce exemption via PA (respect PA language)
+                        speakPA('If you have a green flag you do not have to attend detentions.', paLanguageSelect ? paLanguageSelect.value : 'en');
+                    } else {
+                        alert(`${student.name} Green Flag removed.`);
+                    }
+                    renderAttendance();
+                });
+                actionsTd.appendChild(greenBtn);
+
+                tr.appendChild(nameTd);
+                tr.appendChild(statusTd);
+                tr.appendChild(timeTd);
+                tr.appendChild(notesTd);
+                tr.appendChild(behaviorTd);
+                tr.appendChild(detTd);
+                tr.appendChild(actionsTd);
+
+                // --- WEEKLY SENTRY: check if student should be flagged for detention this week ---
+                try {
+                    const now = new Date();
+                    // compute start of ISO-like week (Monday)
+                    const startOfWeek = new Date(now);
+                    const day = (startOfWeek.getDay() + 6) % 7; // Monday=0
+                    startOfWeek.setDate(startOfWeek.getDate() - day);
+                    startOfWeek.setHours(0,0,0,0);
+                    const sev4ThisWeek = (student.incidents || []).filter(i => {
+                        try {
+                            const d = new Date(i.date);
+                            return i.severity === '4' && d >= startOfWeek;
+                        } catch(e) { return false; }
+                    }).length;
+
+                    if (sev4ThisWeek >= 2 && !student.detention) {
+                        if (student.greenFlag) {
+                            // exempt, but can notify
+                            console.log(`${student.name} has ${sev4ThisWeek} level-4 incidents this week but is Green Flag (exempt).`);
+                            try { appendTestLog(`${student.name}: exempt from detention (Green Flag) with ${sev4ThisWeek} level-4 incidents this week.`); } catch(e){}
+                        } else {
+                            student.detention = true;
+                            // optional: show unobtrusive notice
+                            console.log(`${student.name} automatically assigned detention (>=2 level-4 incidents this week).`);
+                            try { appendTestLog(`${student.name}: auto-assigned detention (${sev4ThisWeek} level-4 incidents this week)`); } catch(e){}
+                            // Persist detention to backend (non-blocking)
+                            persistDetention(student).then(res => {
+                                try { appendTestLog(`${student.name}: detention persisted to server`); } catch(e){}
+                            }).catch(err => {
+                                try { appendTestLog(`${student.name}: failed to persist detention: ${err.message || err}`); } catch(e){}
+                                console.warn('Failed to persist detention for', student.id, err);
+                            });
+                        }
+                    }
+
+                    // Apply row styling: detention (red) highest priority, then greenFlag, then late
+                    if (student.detention) {
+                        tr.classList.add('row-detention');
+                        nameTd.style.color = 'red';
+                        nameTd.title = 'Detention assigned';
+                    } else if (student.greenFlag) {
+                        tr.classList.add('row-greenflag');
+                    } else if (student.status === 'L') {
+                        tr.classList.add('row-late');
+                    }
+                } catch (e) {
+                    console.warn('Weekly check error for', student.id, e);
+                }
+
+                tbody.appendChild(tr);
+            });
+
+            // After rendering, update any selects that depend on students
+            populateDetentionSelect();
+        }
+
+        // Populate select lists used in detention and behavior forms
+        function populateDetentionSelect() {
+            // Behavior incident student select (renderAttendance also updates this)
+            const incidentSelect = document.getElementById('incidentStudent');
+            if (incidentSelect) {
+                const existing = Array.from(incidentSelect.options).map(o => o.value);
+                // ensure it contains all students
+                incidentSelect.innerHTML = '<option value="">Select Student</option>' + students.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
+            }
+
+            // Detention assign select in detention section
+            const detentionSelect = document.querySelector('#detention-assign select');
+            if (detentionSelect) {
+                // preserve the first placeholder option if present
+                const placeholder = detentionSelect.querySelector('option[value=""]') ? '<option value="">Select Student</option>' : '';
+                detentionSelect.innerHTML = placeholder + students.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
+            }
+        }
+
+        function countIncidents(student) {
+            const counts = {};
+            (student.incidents || []).forEach(inc => {
+                counts[inc.severity] = (counts[inc.severity] || 0) + 1;
+            });
+            return counts;
+        }
+
+        // Behavior logging via form
+        document.getElementById('logIncidentBtn').addEventListener('click', async () => {
+            const sid = document.getElementById('incidentStudent').value;
+            if (!sid) return alert('Select a student first');
+            const sev = document.getElementById('incidentSeverity').value;
+            if (!sev) return alert('Select severity');
+            const desc = document.getElementById('incidentDescription').value.trim();
+            const loc = document.getElementById('incidentLocation').value.trim();
+
+            const student = students.find(s => s.id === sid);
+            if (!student) return alert('Student not found');
+
+            const incident = { id: Date.now(), severity: sev, description: desc, location: loc, date: new Date().toISOString() };
+            // add locally immediately for UI responsiveness
+            student.incidents.push(incident);
+
+            // Check detention rule: if student has >=2 severity-4 incidents -> assign detention
+            const sev4count = (student.incidents || []).filter(i => i.severity === '4').length;
+            if (sev4count >= 2 && !student.detention) {
+                if (student.greenFlag) {
+                    // Student exempt due to Green Flag
+                    alert(`${student.name} has ${sev4count} level-4 incidents but has a Green Flag — exempt from detention.`);
+                    // Announce exemption to PA in selected language
+                    speakPA('If you have a green flag you do not have to attend detentions.', paLanguageSelect ? paLanguageSelect.value : 'en');
+                } else {
+                    student.detention = true;
+                    alert(`${student.name} has received ${sev4count} level-4 incidents — detention assigned.`);
+                }
+            }
+
+            // Attempt to POST incident to backend API (if available)
+            try {
+                const apiBase = window.API_BASE || '/api/v1';
+                const payload = {
+                    student_id: student.id,
+                    date: new Date().toISOString().split('T')[0],
+                    time: new Date().toISOString().split('T')[1].slice(0,5),
+                    incident_type: 'OTHER',
+                    severity: Number(sev),
+                    description: desc,
+                    location: loc,
+                    points: (Number(sev) === 1) ? 0 : (Number(sev) * 5)
+                };
+
+                const headers = { 'Content-Type': 'application/json' };
+                const token = localStorage.getItem('bromcom_token');
+                if (token) headers['Authorization'] = `Bearer ${token}`;
+
+                const resp = await fetch(`${apiBase}/incidents/`, {
+                    method: 'POST',
+                    headers,
+                    body: JSON.stringify(payload)
+                });
+                if (!resp.ok) {
+                    const text = await resp.text();
+                    console.warn('Incident POST failed', resp.status, text);
+                    // still keep local copy, but inform user
+                    alert('Incident logged locally — server returned an error. See console for details.');
+                } else {
+                    const data = await resp.json();
+                    console.log('Incident saved to server', data);
+                    alert('Incident logged successfully.');
+                }
+            } catch (err) {
+                console.warn('Incident POST error', err);
+                alert('Incident logged locally — failed to contact server.');
+            }
+
+            // Update UI
+            renderAttendance();
+
+            // Clear behavior form fields
+            document.getElementById('incidentSeverity').value = '';
+            document.getElementById('incidentDescription').value = '';
+            document.getElementById('incidentLocation').value = '';
+        });
+
+        // Count incidents helper for external use
+        window.getStudentIncidents = (id) => {
+            const s = students.find(x => x.id === id);
+            return s ? s.incidents : [];
+        };
+
+        // Submit attendance to backend if available (and save local copy)
+        document.getElementById('submitAttendanceBtn').addEventListener('click', async () => {
+            try {
+                const apiBase = window.API_BASE || '/api/v1';
+                // Read class and date from the attendance form if present
+                const classSelect = document.querySelector('#attendance-mark select');
+                const dateInput = document.querySelector('#attendance-mark input[type="date"]');
+                const classVal = classSelect ? classSelect.value : null;
+                const dateVal = dateInput ? dateInput.value : new Date().toISOString().split('T')[0];
+
+                const records = students.map(s => ({
+                    student_id: s.id,
+                    status: s.status || 'P',
+                    time_in: s.time || '',
+                    notes: s.notes || ''
+                }));
+
+                const payload = {
+                    class_id: classVal,
+                    date: dateVal,
+                    records
+                };
+
+                const headers = { 'Content-Type': 'application/json' };
+                const token = localStorage.getItem('bromcom_token');
+                if (token) headers['Authorization'] = `Bearer ${token}`;
+
+                const resp = await fetch(`${apiBase}/attendance/`, {
+                    method: 'POST',
+                    headers,
+                    body: JSON.stringify(payload)
+                });
+
+                if (!resp.ok) {
+                    const text = await resp.text();
+                    console.warn('Attendance POST failed', resp.status, text);
+                    alert('Attendance saved locally — server returned an error. See console for details.');
+                } else {
+                    const data = await resp.json();
+                    console.log('Attendance saved to server', data);
+                    alert('Attendance submitted successfully.');
+                }
+            } catch (err) {
+                console.warn('Attendance POST error', err);
+                alert('Attendance saved locally — failed to contact server.');
+            }
+            // You may also persist locally as a draft
+            localStorage.setItem('bromcom_attendance_draft', JSON.stringify(students));
+        });
+
+        // Save draft locally
+        document.getElementById('saveDraftBtn').addEventListener('click', () => {
+            localStorage.setItem('bromcom_attendance_draft', JSON.stringify(students));
+            alert('Draft saved to localStorage.');
+        });
+
+        // Add student helper
+        function addStudent(name) {
+            if (!name || !name.trim()) return alert('Enter a student name');
+            const id = name.toLowerCase().replace(/[^a-z0-9]+/g, '-') + '-' + Date.now();
+            const student = { id, name: name.trim(), status: '', time: '', notes: '', incidents: [], detention: false, greenFlag: false };
+            students.push(student);
+            renderAttendance();
+            // persist draft
+            localStorage.setItem('bromcom_attendance_draft', JSON.stringify(students));
+            // Attempt to persist to backend if API available
+            (async () => {
+                try {
+                    const apiBase = window.API_BASE || '/api/v1';
+                    const payload = { name: student.name };
+                    const headers = { 'Content-Type': 'application/json' };
+                    const token = localStorage.getItem('bromcom_token');
+                    if (token) headers['Authorization'] = `Bearer ${token}`;
+                    const resp = await fetch(`${apiBase}/students/`, {
+                        method: 'POST', headers, body: JSON.stringify(payload)
+                    });
+                    if (resp.ok) {
+                        try {
+                            const data = await resp.json();
+                            if (data && data.id) student.server_id = data.id;
+                            console.log('Student saved on server', data);
+                        } catch(e) { console.log('Student created but failed to parse response', e); }
+                    } else {
+                        console.warn('Student POST failed', resp.status);
+                    }
+                } catch (e) {
+                    console.warn('Student persistence failed', e);
+                }
+            })();
+            return student;
+        }
+
+        // Persist Green Flag for a student to backend (POST if new, PATCH if server_id present)
+        async function persistGreenFlag(student) {
+            try {
+                const apiBase = window.API_BASE || '/api/v1';
+                const headers = { 'Content-Type': 'application/json' };
+                const token = localStorage.getItem('bromcom_token');
+                if (token) headers['Authorization'] = `Bearer ${token}`;
+
+                // If student has server_id, PATCH to update
+                if (student.server_id) {
+                    await fetch(`${apiBase}/students/${student.server_id}/`, {
+                        method: 'PATCH', headers, body: JSON.stringify({ green_flag: !!student.greenFlag })
+                    });
+                } else {
+                    // Create or update by posting full student record
+                    const resp = await fetch(`${apiBase}/students/`, {
+                        method: 'POST', headers, body: JSON.stringify({ name: student.name, green_flag: !!student.greenFlag })
+                    });
+                    if (resp.ok) {
+                        try {
+                            const data = await resp.json();
+                            if (data && data.id) student.server_id = data.id;
+                        } catch (e) { console.warn('Failed parsing student create response', e); }
+                    }
+                }
+            } catch (e) {
+                console.warn('persistGreenFlag failed', e);
+                throw e;
+            }
+        }
+
+        // Persist detention flag for a student to backend (PATCH student record)
+        async function persistDetention(student) {
+            try {
+                const apiBase = window.API_BASE || '/api/v1';
+                const headers = { 'Content-Type': 'application/json' };
+                const token = localStorage.getItem('bromcom_token');
+                if (token) headers['Authorization'] = `Bearer ${token}`;
+
+                if (student.server_id) {
+                    const resp = await fetch(`${apiBase}/students/${student.server_id}/`, {
+                        method: 'PATCH', headers, body: JSON.stringify({ detention: !!student.detention })
+                    });
+                    if (!resp.ok) throw new Error('PATCH failed ' + resp.status);
+                    return await resp.json();
+                } else {
+                    // If no server_id, create or update by posting full student with detention
+                    const resp = await fetch(`${apiBase}/students/`, {
+                        method: 'POST', headers, body: JSON.stringify({ name: student.name, detention: !!student.detention })
+                    });
+                    if (!resp.ok) throw new Error('POST failed ' + resp.status);
+                    const data = await resp.json();
+                    if (data && data.id) student.server_id = data.id;
+                    return data;
+                }
+            } catch (e) {
+                console.warn('persistDetention failed', e);
+                // surface to caller
+                throw e;
+            }
+        }
+
+        // Wire Add Student button
+        const addStudentBtn = document.getElementById('addStudentBtn');
+        const newStudentNameInput = document.getElementById('newStudentName');
+        addStudentBtn && addStudentBtn.addEventListener('click', () => {
+            const name = newStudentNameInput.value;
+            const s = addStudent(name);
+            if (s) {
+                newStudentNameInput.value = '';
+                alert(`${s.name} added.`);
+            }
+        });
+
+        // Run automated check test and show results in modal
+        async function runCheckTest() {
+            const results = [];
+            try {
+                // 1) Add test student
+                const testName = 'CHECK_TEST_STUDENT';
+                const testStudent = addStudent(testName);
+                results.push('Add student: OK');
+
+                // 2) Set Green Flag and add 2 severity-4 incidents -> should NOT assign detention
+                testStudent.greenFlag = true;
+                testStudent.incidents.push({ id: Date.now()+1, severity: '4', description: 'auto test', location: 'Class' });
+                testStudent.incidents.push({ id: Date.now()+2, severity: '4', description: 'auto test', location: 'Class' });
+                // run detention logic simulation
+                const sev4count = (testStudent.incidents || []).filter(i => i.severity === '4').length;
+                if (sev4count >= 2) {
+                    if (testStudent.greenFlag) {
+                        results.push('GreenFlag exemption: PASS (no detention assigned)');
+                    } else {
+                        results.push('GreenFlag exemption: FAIL (detention assigned unexpectedly)');
+                    }
+                } else {
+                    results.push('Incident creation: FAIL (not enough sev4 incidents)');
+                }
+
+                // 3) Remove Green Flag and re-evaluate -> detention should be assigned
+                testStudent.greenFlag = false;
+                if (sev4count >= 2 && !testStudent.detention) {
+                    // simulate the same logic used after logging incidents
+                    testStudent.detention = true;
+                }
+                if (testStudent.detention) results.push('Detention assignment after removing GreenFlag: PASS'); else results.push('Detention assignment after removing GreenFlag: FAIL');
+
+                // 4) Test inline edit: change name and ensure selects updated
+                const newName = testStudent.name + ' Edited';
+                testStudent.name = newName;
+                renderAttendance();
+                // Check incident select contains updated name
+                const incOpt = Array.from(document.getElementById('incidentStudent').options).find(o => o.value === testStudent.id && o.textContent === newName);
+                if (incOpt) results.push('Inline edit propagate to selects: PASS'); else results.push('Inline edit propagate to selects: FAIL');
+
+                // Show results in modal and append to visual log
+                const out = results.join('\n');
+                showModal('Check Test Results', out);
+                appendTestLog(out);
+            } catch (e) {
+                console.error('Check test failed', e);
+                showModal('Check Test Error', 'Check test encountered an error: ' + e.message);
+            }
+        }
+
+        const runCheckTestBtn = document.getElementById('runCheckTestBtn');
+        runCheckTestBtn && runCheckTestBtn.addEventListener('click', runCheckTest);
+
+        // --- PA / TTS support (Web Speech API) ---
+        const voiceSelect = document.getElementById('paVoice');
+        const playBtn = document.getElementById('playPA');
+        const paMsgInput = document.getElementById('paMessage');
+        const paLanguageSelect = document.getElementById('paLanguage');
+        const uiLanguageSelect = document.getElementById('uiLanguage');
+
+        // --- Localization (English + Urdu) ---
+        const i18n = {
+            en: {
+                attendanceTitle: '📝 Mark Attendance',
+                behaviorTitle: '🚨 Log Behavioral Incident',
+                submitAttendance: '✅ Submit Attendance',
+                saveDraft: '💾 Save as Draft',
+                logIncidentBtn: '🚨 Log Incident',
+                paLanguageLabel: 'PA Language:',
+                paVoiceLabel: 'PA Voice:',
+                paMessagePlaceholder: "PA message (e.g. 'Assembly in 5 minutes')",
+                severity: {
+                    '1': '1 - Excellent',
+                    '2': '2 - Good',
+                    '3': '3 - Disruptive',
+                    '4': '4 - Poor',
+                    '5': '5 - Physical Conflict'
+                },
+                tableHeaders: ['Student Name','Status','Time','Notes','Behavior','Detention','Actions']
+                ,
+                lockdownMessage: 'Attention Suffa Tul Islam Masjid. We are now entering lockdown, lockdown, lockdown. Code red, code red, code red. Please find the nearest and safest place to hide.'
+            },
+            ur: {
+                attendanceTitle: '📝 حاضری درج کریں',
+                behaviorTitle: '🚨 رویے کا واقعہ درج کریں',
+                submitAttendance: '✅ حاضری جمع کریں',
+                saveDraft: '💾 مسودہ محفوظ کریں',
+                logIncidentBtn: 'واقعہ درج کریں',
+                paLanguageLabel: 'اعلان زبان:',
+                paVoiceLabel: 'PA وائس:',
+                paMessagePlaceholder: 'پیغام درج کریں، مثلاً "اسمبلی پانچ منٹ میں ہے"',
+                severity: {
+                    '1': '1 - بہترین',
+                    '2': '2 - اچھا',
+                    '3': '3 - خلل ڈالنے والا',
+                    '4': '4 - خراب',
+                    '5': '5 - جسمانی تصادم'
+                },
+                tableHeaders: ['طالب علم کا نام','حیثیت','وقت','نوٹس','رویہ','ڈیٹینشن','عمل']
+                ,
+                lockdownMessage: 'توجہ فرمائیں، سفا التُ اسلام مسجد۔ ہم اب لاک ڈاؤن میں داخل ہو رہے ہیں۔ کوڈ ریڈ۔ براہِ مہربانی قریب ترین اور محفوظ جگہ تلاش کریں اور چھپ جائیں۔'
+            }
+        };
+
+        function applyLocalization(lang) {
+            const L = i18n[lang] || i18n.en;
+            // Section titles
+            const attTitle = document.querySelector('#attendance-mark .section-title');
+            if (attTitle) attTitle.textContent = L.attendanceTitle;
+            const behTitle = document.querySelector('#behavior-incident .section-title');
+            if (behTitle) behTitle.textContent = L.behaviorTitle;
+
+            // Buttons
+            const submitBtn = document.getElementById('submitAttendanceBtn');
+            if (submitBtn) submitBtn.textContent = L.submitAttendance;
+            const saveBtn = document.getElementById('saveDraftBtn');
+            if (saveBtn) saveBtn.textContent = L.saveDraft;
+            const logBtn = document.getElementById('logIncidentBtn');
+            if (logBtn) logBtn.textContent = L.logIncidentBtn;
+
+            // PA labels and placeholder
+            const paLangLabel = document.querySelector('label[for="paLanguage"]');
+            if (paLangLabel) paLangLabel.textContent = L.paLanguageLabel;
+            const paVoiceLabel = document.querySelector('label[for="paVoice"]');
+            if (paVoiceLabel) paVoiceLabel.textContent = L.paVoiceLabel;
+            if (paMsgInput) paMsgInput.placeholder = L.paMessagePlaceholder;
+
+            // UI language label
+            const uiLangLabel = document.querySelector('label[for="uiLanguage"]');
+            if (uiLangLabel) uiLangLabel.textContent = lang === 'ur' ? 'UI زبان:' : 'UI Language:';
+
+            // Table headers (interactive table)
+            const headerThs = document.querySelectorAll('#interactiveAttendance thead th');
+            if (headerThs && headerThs.length >= L.tableHeaders.length) {
+                L.tableHeaders.forEach((txt, i) => headerThs[i].textContent = txt);
+            }
+
+            // Update severity select options
+            const sev = document.getElementById('incidentSeverity');
+            if (sev) {
+                sev.innerHTML = '<option value="">' + (lang === 'ur' ? 'شدت منتخب کریں' : 'Select Severity') + '</option>' +
+                    Object.keys(L.severity).map(k => `<option value="${k}">${L.severity[k]}</option>`).join('');
+            }
+
+            // Update placeholder for description
+            const desc = document.getElementById('incidentDescription');
+            if (desc) desc.placeholder = lang === 'ur' ? 'واقعات کی تفصیل یہاں لکھیں...' : 'Describe the incident in detail...';
+
+            // Update notes placeholder in table rows (if any rendered)
+            document.querySelectorAll('#attendanceInteractiveBody input[type="text"]').forEach(inp => {
+                if (inp) inp.placeholder = lang === 'ur' ? 'نوٹس' : 'Notes';
+            });
+        }
+
+        // Wire UI language selector
+        if (uiLanguageSelect) {
+            uiLanguageSelect.addEventListener('change', () => {
+                applyLocalization(uiLanguageSelect.value);
+                // when UI language changes, also refresh voices to prefer Urdu if needed
+                populateVoices();
+            });
+        }
+
+        function populateVoices() {
+            const voices = speechSynthesis.getVoices();
+            voiceSelect.innerHTML = '';
+            const langPref = paLanguageSelect ? paLanguageSelect.value : 'en';
+            // Filter by language preference: Urdu -> prefer ur, English -> prefer en (including en-PK)
+            let preferred = [];
+            if (langPref === 'ur') {
+                preferred = voices.filter(v => /ur|urdu|pk|pak/i.test(v.lang + ' ' + v.name));
+            } else {
+                preferred = voices.filter(v => /en|en-PK|en-US|en-GB/i.test(v.lang + ' ' + v.name));
+            }
+            const list = preferred.length ? preferred : voices;
+            list.forEach(v => {
+                const o = document.createElement('option');
+                o.value = v.name;
+                o.textContent = `${v.name} (${v.lang})`;
+                voiceSelect.appendChild(o);
+            });
+        }
+
+        // Some browsers load voices asynchronously
+        populateVoices();
+        if (speechSynthesis.onvoiceschanged !== undefined) {
+            speechSynthesis.onvoiceschanged = populateVoices;
+        }
+
+        // Update voices when language changes
+        if (paLanguageSelect) {
+            paLanguageSelect.addEventListener('change', () => {
+                // Set default message based on language
+                if (paLanguageSelect.value === 'ur') {
+                    paMsgInput.value = paMsgInput.value || 'توجہ فرمائیں، اسمبلی پانچ منٹ میں شروع ہوگی۔';
+                } else {
+                    paMsgInput.value = paMsgInput.value || 'Attention please, assembly in five minutes.';
+                }
+                populateVoices();
+            });
+        }
+
+        playBtn.addEventListener('click', () => {
+            const langPref = paLanguageSelect ? paLanguageSelect.value : 'en';
+            const defaultMsg = langPref === 'ur' ? 'توجہ فرمائیں، اسمبلی پانچ منٹ میں شروع ہوگی۔' : 'Attention please, assembly in five minutes.';
+            const msg = paMsgInput.value.trim() || defaultMsg;
+            const utter = new SpeechSynthesisUtterance(msg);
+            const selectedName = voiceSelect.value;
+            const voices = speechSynthesis.getVoices();
+            if (selectedName) {
+                const v = voices.find(x => x.name === selectedName);
+                if (v) utter.voice = v;
+            }
+            // If voice selected, respect its lang, else hint according to language select
+            if (utter.voice && utter.voice.lang) {
+                utter.lang = utter.voice.lang;
+            } else {
+                utter.lang = langPref === 'ur' ? 'ur-PK' : 'en-PK';
+            }
+            speechSynthesis.cancel();
+            speechSynthesis.speak(utter);
+        });
+
+        // --- PA Preset Actions: School Bell, Fire Alarm, Lockdown ---
+        const bellBtn = document.getElementById('schoolBellBtn');
+        const fireBtn = document.getElementById('fireAlarmBtn');
+        const lockBtn = document.getElementById('lockdownBtn');
+
+        // Small overlay to show active alerts
+        function showAlertOverlay(type, text) {
+            let overlay = document.getElementById('paOverlay');
+            if (!overlay) {
+                overlay = document.createElement('div');
+                overlay.id = 'paOverlay';
+                overlay.style.position = 'fixed';
+                overlay.style.top = '0';
+                overlay.style.left = '0';
+                overlay.style.right = '0';
+                overlay.style.padding = '16px';
+                overlay.style.zIndex = '2000';
+                overlay.style.textAlign = 'center';
+                overlay.style.color = '#fff';
+                overlay.style.fontSize = '18px';
+                overlay.style.display = 'flex';
+                overlay.style.justifyContent = 'center';
+                overlay.style.alignItems = 'center';
+                const close = document.createElement('button');
+                close.textContent = 'Cancel';
+                close.style.marginLeft = '12px';
+                close.className = 'btn';
+                close.addEventListener('click', () => {
+                    stopFireAlarm();
+                    document.body.removeChild(overlay);
+                });
+                overlay.appendChild(document.createElement('span'));
+                overlay.appendChild(close);
+                document.body.appendChild(overlay);
+            }
+            overlay.style.display = 'flex';
+            const span = overlay.querySelector('span');
+            span.textContent = text;
+            if (type === 'fire') {
+                overlay.style.background = 'linear-gradient(90deg,#e05252,#b32222)';
+            } else if (type === 'lockdown') {
+                overlay.style.background = 'linear-gradient(90deg,#f0a500,#f39c12)';
+            } else {
+                overlay.style.background = 'linear-gradient(90deg,#5dade2,#2e86c1)';
+            }
+        }
+
+        // School bell: play 3 short tones using WebAudio
+        function playSchoolBell() {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const now = ctx.currentTime;
+                const freqs = [880, 660, 880];
+                freqs.forEach((f, i) => {
+                    const o = ctx.createOscillator();
+                    const g = ctx.createGain();
+                    o.type = 'sine';
+                    o.frequency.value = f;
+                    o.connect(g);
+                    g.connect(ctx.destination);
+                    const start = now + i * 0.35;
+                    o.start(start);
+                    o.stop(start + 0.25);
+                });
+                showAlertOverlay('bell','School bell playing');
+                setTimeout(() => {
+                    const overlay = document.getElementById('paOverlay');
+                    if (overlay) overlay.remove();
+                }, 1500);
+            } catch (e) {
+                console.warn('Bell play error', e);
+            }
+        }
+
+        // Fire alarm: simple siren loop using oscillator sweeping
+        let fireInterval = null;
+        function playFireAlarm() {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const o = ctx.createOscillator();
+                const g = ctx.createGain();
+                o.type = 'sawtooth';
+                o.frequency.value = 440;
+                o.connect(g);
+                g.connect(ctx.destination);
+                g.gain.value = 0.2;
+                o.start();
+                let up = true;
+                fireInterval = setInterval(() => {
+                    o.frequency.setTargetAtTime(up ? 1200 : 400, ctx.currentTime, 0.05);
+                    up = !up;
+                }, 600);
+                // store nodes so we can stop
+                window.__fireAlarm = { ctx, o, g };
+                showAlertOverlay('fire','Fire alarm active — evacuate immediately');
+            } catch (e) {
+                console.warn('Fire alarm error', e);
+                // fallback to TTS
+                speakPA('Fire alarm. Please evacuate immediately.', 'en');
+                showAlertOverlay('fire','Fire alarm active — evacuate immediately');
+            }
+        }
+
+        function stopFireAlarm() {
+            if (fireInterval) {
+                clearInterval(fireInterval);
+                fireInterval = null;
+            }
+            if (window.__fireAlarm) {
+                try { window.__fireAlarm.o.stop(); } catch(e) {}
+                try { window.__fireAlarm.ctx.close(); } catch(e) {}
+                window.__fireAlarm = null;
+            }
+            const overlay = document.getElementById('paOverlay');
+            if (overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay);
+        }
+
+        // Lockdown: TTS announcement repeated and overlay (uses i18n lockdownMessage)
+        function playLockdown() {
+            const langPref = uiLanguageSelect ? uiLanguageSelect.value : 'en';
+            const msg = (i18n[langPref] && i18n[langPref].lockdownMessage) ? i18n[langPref].lockdownMessage : i18n.en.lockdownMessage;
+            // speak 3 times with small delays
+            speakPA(msg, langPref);
+            setTimeout(() => speakPA(msg, langPref), 3500);
+            setTimeout(() => speakPA(msg, langPref), 7000);
+            showAlertOverlay('lockdown', msg);
+        }
+
+        // Generic helper to speak (reuses existing TTS setup)
+        function speakPA(text, langHint) {
+            const utter = new SpeechSynthesisUtterance(text);
+            const voices = speechSynthesis.getVoices();
+            // try to pick voice matching chosen PA voice or language
+            const selectedName = voiceSelect.value;
+            if (selectedName) {
+                const v = voices.find(x => x.name === selectedName);
+                if (v) utter.voice = v;
+            }
+            if (!utter.voice) {
+                // pick a voice matching langHint
+                const v2 = voices.find(x => (langHint === 'ur' ? /ur|urdu/i : /en/i).test(x.lang + ' ' + x.name));
+                if (v2) utter.voice = v2;
+            }
+            utter.lang = utter.voice && utter.voice.lang ? utter.voice.lang : (langHint === 'ur' ? 'ur-PK' : 'en-PK');
+            speechSynthesis.cancel();
+            speechSynthesis.speak(utter);
+        }
+
+        bellBtn && bellBtn.addEventListener('click', () => playSchoolBell());
+        fireBtn && fireBtn.addEventListener('click', () => playFireAlarm());
+        lockBtn && lockBtn.addEventListener('click', () => playLockdown());
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            renderAttendance();
+            const initialLang = uiLanguageSelect ? uiLanguageSelect.value : 'en';
+            applyLocalization(initialLang);
+        });
+
+        // Modal helpers for test results
+        const testModal = document.getElementById('testModal');
+        const testModalTitle = document.getElementById('testModalTitle');
+        const testModalBody = document.getElementById('testModalBody');
+        const testModalClose = document.getElementById('testModalClose');
+        const testModalOk = document.getElementById('testModalOk');
+
+        function showModal(title, body) {
+            if (testModalTitle) testModalTitle.textContent = title;
+            if (testModalBody) testModalBody.textContent = body;
+            if (testModal) testModal.classList.add('active');
+            if (testModal) testModal.setAttribute('aria-hidden', 'false');
+            // update copy & download payload
+            currentTestPayload = body;
+        }
+
+        function closeModal() {
+            if (testModal) testModal.classList.remove('active');
+            if (testModal) testModal.setAttribute('aria-hidden', 'true');
+        }
+
+        testModalClose && testModalClose.addEventListener('click', closeModal);
+        testModalOk && testModalOk.addEventListener('click', closeModal);
+
+        // Copy / Download helpers
+        let currentTestPayload = '';
+        const testModalCopy = document.getElementById('testModalCopy');
+        const testModalDownload = document.getElementById('testModalDownload');
+        testModalCopy && testModalCopy.addEventListener('click', async () => {
+            try {
+                await navigator.clipboard.writeText(currentTestPayload || (testModalBody && testModalBody.textContent) || '');
+                alert('Test results copied to clipboard');
+            } catch (e) { alert('Copy failed: ' + e.message); }
+        });
+        testModalDownload && testModalDownload.addEventListener('click', () => {
+            const payload = currentTestPayload || (testModalBody && testModalBody.textContent) || '';
+            const blob = new Blob([payload], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'bromcom-test-results.txt';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            URL.revokeObjectURL(url);
+        });
+
+        // Test Log panel helpers
+        const testLogBody = document.getElementById('testLogBody');
+        const clearTestLog = document.getElementById('clearTestLog');
+        const toggleTestLog = document.getElementById('toggleTestLog');
+        let testLogVisible = true;
+        function appendTestLog(entry) {
+            const ts = new Date().toLocaleString();
+            const line = `[${ts}] ${entry}`;
+            if (testLogBody) testLogBody.textContent = line + '\n' + (testLogBody.textContent || '');
+        }
+        clearTestLog && clearTestLog.addEventListener('click', () => { if (testLogBody) testLogBody.textContent = ''; });
+        toggleTestLog && toggleTestLog.addEventListener('click', () => {
+            testLogVisible = !testLogVisible;
+            if (testLogVisible) { document.getElementById('testLogBody').style.display = 'block'; toggleTestLog.textContent = 'Hide'; }
+            else { document.getElementById('testLogBody').style.display = 'none'; toggleTestLog.textContent = 'Show'; }
+        });
+    </script>
+</body>
+</html>
